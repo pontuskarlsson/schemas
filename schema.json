@@ -1,0 +1,167 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/pontuskarlsson/schemas/main/schema.json",
+  "title": "JSON Schema Meta-Schema",
+  "version": {
+    "schemaVersion": "1.0.0",
+    "lastUpdated": "2024-12-21",
+    "status": {
+      "state": "draft",
+      "details": "Initial draft of JSON Schema meta-schema",
+      "since": "2024-12-21",
+      "validUntil": null,
+      "replacedBy": null
+    },
+    "compatibility": {
+      "minimum": "1.0.0",
+      "maximum": "1.9.9",
+      "excluded": []
+    }
+  },
+  "creator": {
+    "name": "Pontus Karlsson",
+    "website": "https://pontuskarlsson.com",
+    "github": "https://github.com/pontuskarlsson"
+  },
+  "license": {
+    "name": "Creative Commons Attribution-ShareAlike 4.0 International",
+    "url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "attributionText": "Created by Pontus Karlsson and licensed under CC BY-SA 4.0",
+    "attributionUrl": "https://github.com/pontuskarlsson/schemas"
+  },
+  "description": "Meta-schema for validating JSON Schema documents",
+  "type": "object",
+  "required": [
+    "$schema",
+    "$id",
+    "title",
+    "version",
+    "creator",
+    "license",
+    "description",
+    "type"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "format": "uri"
+    },
+    "$id": {
+      "type": "string",
+      "format": "uri"
+    },
+    "title": {
+      "type": "string"
+    },
+    "version": {
+      "type": "object",
+      "required": ["schemaVersion", "lastUpdated", "status"],
+      "properties": {
+        "schemaVersion": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "lastUpdated": {
+          "type": "string",
+          "format": "date"
+        },
+        "status": {
+          "type": "object",
+          "required": ["state", "since"],
+          "properties": {
+            "state": {
+              "type": "string",
+              "enum": ["draft", "stable", "deprecated", "retired"]
+            },
+            "details": {
+              "type": "string"
+            },
+            "since": {
+              "type": "string",
+              "format": "date"
+            },
+            "validUntil": {
+              "type": ["string", "null"],
+              "format": "date"
+            },
+            "replacedBy": {
+              "type": ["string", "null"],
+              "format": "uri"
+            }
+          }
+        },
+        "compatibility": {
+          "type": "object",
+          "required": ["minimum", "maximum"],
+          "properties": {
+            "minimum": {
+              "type": "string",
+              "pattern": "^\\d+\\.\\d+\\.\\d+$"
+            },
+            "maximum": {
+              "type": "string",
+              "pattern": "^\\d+\\.\\d+\\.\\d+$"
+            },
+            "excluded": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^\\d+\\.\\d+\\.\\d+$"
+              }
+            }
+          }
+        }
+      }
+    },
+    "creator": {
+      "type": "object",
+      "required": ["name", "github"],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "website": {
+          "type": "string",
+          "format": "uri"
+        },
+        "github": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "license": {
+      "type": "object",
+      "required": ["name", "url", "attributionText", "attributionUrl"],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "attributionText": {
+          "type": "string"
+        },
+        "attributionUrl": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "description": {
+      "type": "string"
+    },
+    "definitions": {
+      "type": "object"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["array", "boolean", "integer", "null", "number", "object", "string"]
+    },
+    "properties": {
+      "type": "object"
+    }
+  }
+}
