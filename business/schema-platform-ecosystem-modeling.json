@@ -1,0 +1,333 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/pontuskarlsson/schemas/main/business/schema-platform-ecosystem-modeling.json",
+  "title": "Platform Ecosystem Modeling Schema",
+  "version": {
+    "schemaVersion": "1.0.0",
+    "lastUpdated": "2024-12-23",
+    "status": {
+      "state": "draft",
+      "details": "Practical implementation schema based on PEML concepts",
+      "since": "2024-12-23",
+      "validUntil": null,
+      "replacedBy": null
+    },
+    "compatibility": {
+      "minimum": "1.0.0",
+      "maximum": "1.9.9",
+      "excluded": []
+    }
+  },
+  "creator": {
+    "name": "Pontus Karlsson",
+    "website": "https://pontuskarlsson.com",
+    "github": "https://github.com/pontuskarlsson"
+  },
+  "license": {
+    "name": "Creative Commons License Attribution 4.0 International (CC BY 4.0)",
+    "url": "https://creativecommons.org/licenses/by/4.0/",
+    "attributionText": "Schema created by Pontus Karlsson, based on PEML concepts",
+    "attributionUrl": "https://github.com/pontuskarlsson/schemas/tree/main/business"
+  },
+  "description": "A practical implementation schema for modeling platform ecosystems, interpreting and adapting concepts from the Platform Ecosystems Modeling Language (PEML)",
+  "source": {
+    "title": "Modeling Platform Ecosystems",
+    "authors": [
+      "Tobias Pauli",
+      "Emanuel Marx",
+      "Sebastian Dunzer",
+      "Martin Matzner"
+    ],
+    "institution": "Friedrich-Alexander-Universität Erlangen-Nürnberg, Fürther Straße 248, Germany",
+    "year": 2020,
+    "url": "https://open.fau.de/items/b25d5e70-b288-4fcb-afd6-d3c883d7647a",
+    "license": "CC BY 4.0"
+  },
+  "type": "object",
+  "definitions": {
+    "entity": {
+      "type": "object",
+      "description": "Real-world person or organization in the platform ecosystem",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the entity"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["individual", "organization"],
+          "description": "Type of the real-world entity"
+        },
+        "roles": {
+          "type": "array",
+          "description": "The roles this entity has in the platform ecosystem",
+          "items": {
+            "$ref": "#/definitions/role"
+          }
+        }
+      },
+      "required": ["id", "type"]
+    },
+    "role": {
+      "type": "object",
+      "description": "A specific role that can be performed in the platform ecosystem",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the role"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the role"
+        },
+        "actorType": {
+          "type": "string",
+          "enum": ["PO", "C", "U"],
+          "description": "The actor type this role belongs to: Platform Owner (PO), Complementor (C), or User (U)"
+        },
+        "resources": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Resources associated with this role"
+        },
+        "activities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Activities performed in this role"
+        },
+        "valuePropositions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "References to value proposition IDs this role contributes to or consumes"
+          },
+          "description": "Value propositions this role is associated with"
+        }
+      },
+      "required": ["id", "name", "actorType"]
+    },
+    "boundaryResource": {
+      "type": "object",
+      "description": "Interface enabling interaction with the platform",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["social", "development", "application"],
+          "description": "Type of boundary resource"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": ["type", "name"]
+    },
+    "valueProposition": {
+      "type": "object",
+      "description": "A value proposition offered by the platform",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the value proposition"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the value proposition"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["main", "standard"],
+          "description": "Either the single main value proposition of the platform, or one of multiple value propositions"
+        },
+        "associatedRoles": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "References to role IDs associated with this value proposition"
+          },
+          "description": "Roles that contribute to or consume this value proposition"
+        },
+        "leverageTypes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["innovation", "production", "transaction"],
+            "description": "Types of leverage provided by this value proposition"
+          }
+        }
+      },
+      "required": ["id", "name", "type"]
+    },
+    "link": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["platform-actor", "actor-platform", "peripheral"],
+          "description": "Type of link between components"
+        },
+        "from": {
+          "type": "string",
+          "description": "Source component ID"
+        },
+        "to": {
+          "type": "string",
+          "description": "Target component ID"
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the transfer or relationship"
+        }
+      },
+      "required": ["type", "from", "to"]
+    }
+  },
+  "properties": {
+    "ecosystem": {
+      "type": "object",
+      "description": "Ecosystem elements of the platform",
+      "properties": {
+        "entities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/entity"
+          }
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/link"
+          }
+        }
+      },
+      "required": ["entities"]
+    },
+    "platform": {
+      "type": "object",
+      "description": "Core platform elements",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "owner": {
+          "type": "string",
+          "description": "Reference to entity ID that owns the platform"
+        },
+        "sides": {
+          "type": "object",
+          "description": "Definition of platform sides",
+          "properties": {
+            "supply": {
+              "type": "object",
+              "description": "Supply side of the platform",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["name"]
+            },
+            "demand": {
+              "type": "object",
+              "description": "Demand side of the platform",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["name"]
+            }
+          },
+          "required": ["supply", "demand"]
+        },
+        "actorTypes": {
+          "type": "object",
+          "description": "Definition of valid actor types in the platform",
+          "properties": {
+            "platformOwner": {
+              "type": "object",
+              "properties": {
+                "validRoles": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "List of valid role names for platform owner"
+                }
+              },
+              "required": ["validRoles"]
+            },
+            "complementors": {
+              "type": "object",
+              "properties": {
+                "validRoles": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "List of valid role names for complementors"
+                }
+              },
+              "required": ["validRoles"]
+            },
+            "users": {
+              "type": "object",
+              "properties": {
+                "validRoles": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "List of valid role names for users"
+                }
+              },
+              "required": ["validRoles"]
+            }
+          },
+          "required": ["platformOwner", "complementors", "users"]
+        },
+        "boundaryResources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/boundaryResource"
+          }
+        }
+      },
+      "required": ["name", "owner", "sides", "actorTypes"]
+    },
+    "valuePropositions": {
+      "type": "array",
+      "description": "Collection of platform value propositions, must include exactly one main value proposition",
+      "items": {
+        "$ref": "#/definitions/valueProposition"
+      },
+      "minItems": 1,
+      "allOf": [
+        {
+          "contains": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "const": "main"
+              }
+            },
+            "required": ["type"]
+          }
+        }
+      ]
+    }
+  },
+  "required": ["ecosystem", "platform", "valuePropositions"]
+}
