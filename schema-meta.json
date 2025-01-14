@@ -2,9 +2,22 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://raw.githubusercontent.com/pontuskarlsson/schemas/main/schema.json",
   "title": "JSON Schema Meta-Schema",
+  "description": "Meta-schema for validating JSON Schema documents",
+  
+  "docs": {
+    "purpose": "This meta-schema defines the structure and validation rules for all schemas in the system",
+    "usage": "Use this schema to validate your new schemas and ensure they follow the standardized structure",
+    "sections": {
+      "version": "Contains versioning, status tracking, and compatibility information",
+      "creator": "Identifies the creator and maintainer of the schema",
+      "license": "Specifies the licensing terms and attribution requirements",
+      "properties": "Defines the core properties that all schemas must include"
+    }
+  },
+
   "version": {
     "schemaVersion": "1.0.0",
-    "lastUpdated": "2024-12-21",
+    "lastUpdated": "2025-01-14",
     "status": {
       "state": "draft",
       "details": "Initial draft of JSON Schema meta-schema",
@@ -18,19 +31,22 @@
       "excluded": []
     }
   },
+
   "creator": {
     "name": "Pontus Karlsson",
     "website": "https://pontuskarlsson.com",
     "github": "https://github.com/pontuskarlsson"
   },
+
   "license": {
     "name": "Creative Commons Attribution-ShareAlike 4.0 International",
     "url": "https://creativecommons.org/licenses/by-sa/4.0/",
     "attributionText": "Created by Pontus Karlsson and licensed under CC BY-SA 4.0",
     "attributionUrl": "https://github.com/pontuskarlsson/schemas"
   },
-  "description": "Meta-schema for validating JSON Schema documents",
+
   "type": "object",
+
   "required": [
     "$schema",
     "$id",
@@ -41,69 +57,86 @@
     "description",
     "type"
   ],
+
   "properties": {
     "$schema": {
       "type": "string",
-      "format": "uri"
+      "format": "uri",
+      "description": "URI reference to the JSON Schema specification this schema adheres to"
     },
     "$id": {
       "type": "string",
-      "format": "uri"
+      "format": "uri",
+      "description": "Unique identifier URI for this schema, used for referencing"
     },
     "title": {
-      "type": "string"
+      "type": "string",
+      "description": "Human-readable title for the schema"
     },
     "version": {
       "type": "object",
+      "description": "Version control and status tracking information",
       "required": ["schemaVersion", "lastUpdated", "status"],
       "properties": {
         "schemaVersion": {
           "type": "string",
-          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "Semantic version number (MAJOR.MINOR.PATCH)"
         },
         "lastUpdated": {
           "type": "string",
-          "format": "date"
+          "format": "date",
+          "description": "Date of the last update to this schema"
         },
         "status": {
           "type": "object",
+          "description": "Current status and lifecycle information",
           "required": ["state", "since"],
           "properties": {
             "state": {
               "type": "string",
-              "enum": ["draft", "stable", "deprecated", "retired"]
+              "enum": ["draft", "stable", "deprecated", "retired"],
+              "description": "Current lifecycle state of the schema"
             },
             "details": {
-              "type": "string"
+              "type": "string",
+              "description": "Additional information about the current state"
             },
             "since": {
               "type": "string",
-              "format": "date"
+              "format": "date",
+              "description": "Date when the current state was set"
             },
             "validUntil": {
               "type": ["string", "null"],
-              "format": "date"
+              "format": "date",
+              "description": "Optional end date for the current state"
             },
             "replacedBy": {
               "type": ["string", "null"],
-              "format": "uri"
+              "format": "uri",
+              "description": "URI of the schema that replaces this one, if any"
             }
           }
         },
         "compatibility": {
           "type": "object",
+          "description": "Version compatibility requirements",
           "required": ["minimum", "maximum"],
           "properties": {
             "minimum": {
               "type": "string",
-              "pattern": "^\\d+\\.\\d+\\.\\d+$"
+              "pattern": "^\\d+\\.\\d+\\.\\d+$",
+              "description": "Minimum compatible version"
             },
             "maximum": {
               "type": "string",
-              "pattern": "^\\d+\\.\\d+\\.\\d+$"
+              "pattern": "^\\d+\\.\\d+\\.\\d+$",
+              "description": "Maximum compatible version"
             },
             "excluded": {
               "type": "array",
+              "description": "List of specific versions to exclude",
               "items": {
                 "type": "string",
                 "pattern": "^\\d+\\.\\d+\\.\\d+$"
@@ -115,53 +148,66 @@
     },
     "creator": {
       "type": "object",
+      "description": "Information about the schema's creator",
       "required": ["name", "github"],
       "properties": {
         "name": {
-          "type": "string"
+          "type": "string",
+          "description": "Name of the creator"
         },
         "website": {
           "type": "string",
-          "format": "uri"
+          "format": "uri",
+          "description": "Creator's website URL"
         },
         "github": {
           "type": "string",
-          "format": "uri"
+          "format": "uri",
+          "description": "Creator's GitHub profile URL"
         }
       }
     },
     "license": {
       "type": "object",
+      "description": "Licensing and attribution information",
       "required": ["name", "url", "attributionText", "attributionUrl"],
       "properties": {
         "name": {
-          "type": "string"
+          "type": "string",
+          "description": "Name of the license"
         },
         "url": {
           "type": "string",
-          "format": "uri"
+          "format": "uri",
+          "description": "URL to the full license text"
         },
         "attributionText": {
-          "type": "string"
+          "type": "string",
+          "description": "Text to use when attributing this schema"
         },
         "attributionUrl": {
           "type": "string",
-          "format": "uri"
+          "format": "uri",
+          "description": "URL to use for attribution links"
         }
       }
     },
     "description": {
-      "type": "string"
+      "type": "string",
+      "description": "Detailed description of the schema's purpose and usage"
     },
     "definitions": {
-      "type": "object"
+      "type": "object",
+      "description": "Reusable schema definitions"
     },
     "type": {
       "type": "string",
-      "enum": ["array", "boolean", "integer", "null", "number", "object", "string"]
+      "enum": ["array", "boolean", "integer", "null", "number", "object", "string"],
+      "description": "JSON Schema type for the root schema object"
     },
     "properties": {
-      "type": "object"
+      "type": "object",
+      "description": "Property definitions for the schema"
     }
   }
 }
